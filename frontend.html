@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notenrechner</title>
     <script src="js/script.js" defer></script>
+    <script src="var/done.js" defer></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -45,8 +46,12 @@
         <label for="benutzerDropdown">Benutzer auswählen:</label>
         <select id="benutzerDropdown"></select>
 
-        <button onclick="grundstrukturErstellen()">Fach hinzufügen</button>
-        <button id='notenDurchschnittButton' onclick="sendeDatenAnBackend()">Berechne den Notendurchschnitt</button>
+        <button onclick="fächerAnzeigen()">Fach hinzufügen</button>
+        <button onclick="sendeDatenAnBackend()" id='notenDurchschnittButton' >Aktueller Notendurchschnitt berechnen</button>
+
+        <h3 id="Fächer" style="display: none;">Fächer</h3>
+        <h3 id="Noten" style="display: none;">Noten</h3>
+
     </section>
 
     <section id="ausgabebereich">
