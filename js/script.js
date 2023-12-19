@@ -71,7 +71,6 @@ function auswahlUser() {
 
 function userFachNotenObjekt() {
     let user;
-    let fachNotenObjekt = {};
 
     if (ausgewählterUserWert == 'option1') {
         user = document.getElementById('username').value;
@@ -86,10 +85,64 @@ function userFachNotenObjekt() {
 
     console.log(user);
 
-}
 
-/*// JSON aus dem Array erstellen
-    let jsonData = JSON.stringify(fachNotenObjekte);
+    let faecherArray = [];
+
+    // Iteriere durch alle erstellten Fächer
+    for (let i = 1; i <= fachZähler; i++) {
+        let fachInput = document.getElementById('f' + i);
+        if (fachInput && fachInput.value.trim() !== "") {
+            // Ein Fach-Objekt erstellen und Fachname hinzufügen
+            let fachObjekt = {
+                Fach: fachInput.value,
+                Noten: []
+            };
+
+
+
+            // Iteriere durch alle Notenfelder für das aktuelle Fach
+            let notenID = 1;
+            while (true) {
+                let noteInput = document.getElementById('f' + i + 'n' + notenID);
+                if (noteInput) {
+                    // Wenn ein Note-Input vorhanden ist und nicht leer ist, füge die Note zum Fach-Objekt hinzu
+                    let noteValue = parseFloat(noteInput.value);
+                    if (!isNaN(noteValue)) {
+                        fachObjekt.Noten.push(noteValue);
+                    } else {
+                        console.log("Ungültige Note im Fach " + fachInput.value);
+                        return; // Funktion abbrechen, wenn ungültige Note vorhanden ist
+                    }
+                    notenID++;
+                } else {
+                    // Wenn kein weiteres Note-Input vorhanden ist, breche die Schleife ab
+                    break;
+                }
+            }
+
+
+            // Füge das Fach-Objekt zum Array hinzu, wenn es einen Fachnamen und Noten enthält
+            if (fachObjekt.Noten.length > 0) {
+                faecherArray.push(fachObjekt);
+            }
+        } else {
+            console.log('Keine Fachbezeichnung')
+            return;
+        }
+    }
+
+
+    let userFachNotenObjekt = {
+        Benutzer: user,
+        Faecher: faecherArray
+    }
+
+    console.log(userFachNotenObjekt)
+
+
+
+    // JSON aus dem Array erstellen
+    let jsonData = JSON.stringify(userFachNotenObjekt);
 
     // AJAX-Anfrage erstellen
     let xhr = new XMLHttpRequest();
@@ -112,5 +165,4 @@ function userFachNotenObjekt() {
 
     // Anfrage senden
     xhr.send(jsonData);
-
-    */
+}
