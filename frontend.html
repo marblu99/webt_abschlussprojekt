@@ -9,20 +9,36 @@
 </head>
 <body>
     <h1>Notenrechner</h1>
-    <section>
+    <nav>
+        <ul>
+            <li><a href="#information">Information</a></li>
+            <li><a href="#eingabebereich">Eingabebereich</a></li>
+            <li><a href="#ausgabebereich">Ausgabebereich</a></li>
+        </ul>
+    </nav>
+
+    
+    
+    <section id="information">
         <h2>Projektbeschrieb</h2>
         <p>
-            Diese Webapplikation berechnet den Notendurchschnitt pro Fach und den gesamthaften Notendurschnitt.
-            Duch die Inputfelder können Fächer und Noten hinzugefügt/ entfernt werden. Diese werden anschliessend
-            in einer Datenbank abgespeichert. Die Berechnung findet mittels PHP im Backend statt.
+            Ziel dieser Webapplikation ist es, alle Noten eines Benutzers in einer Datenbank abzuspeichern und anschliessend
+            den Notendurchschnitt pro Fach sowie den Gesamtschnitt auszugeben.
         </p>
     </section>
 
-    <label for="username">Benutzername:</label>
-    <input type="text" id="username" placeholder="Neuer Benutzername">
+    <section id="eingabebereich">
+        <h2>Eingabebereich</h2>
+        <label for="username">Benutzername:</label>
+        <input type="text" id="username" placeholder="Neuer Benutzername">
 
-    <button onclick="grundstrukturErstellen()">Fach hinzufügen</button>
-    <button onclick="sendeDatenAnBackend()">Berechne den Notendurchschnitt</button>
-    
+        <button onclick="grundstrukturErstellen()">Fach hinzufügen</button>
+        <button onclick="sendeDatenAnBackend()">Berechne den Notendurchschnitt</button>
+    </section>
+
+    <section id="ausgabebereich">
+        <h2>Ausgabebereich</h2>
+        <!-- Hier werden die Ergebnisse angezeigt -->
+    </section>
 </body>
 </html>
