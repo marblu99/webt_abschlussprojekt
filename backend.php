@@ -3,12 +3,37 @@
 $jsonData = file_get_contents('php://input');
 $data = json_decode($jsonData);
 
-// Hier kannst du die empfangenen Daten weiter verarbeiten, z.B. in einer Datenbank speichern
-// Beachte, dass dies ein einfaches Beispiel ist und du dies an deine Anforderungen anpassen musst
+// Verbindungsparameter zur MySQL-Datenbank
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test"; // Der Name deiner Datenbank
 
-// Beispiel: Daten in einer Datei speichern (nur zu Demonstrationszwecken)
-file_put_contents('gespeicherte_daten.json', json_encode($data));
+// Verbindung zur Datenbank herstellen
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Gib eine Antwort an die JavaScript-Anwendung zurück
-echo 'Daten erfolgreich empfangen und verarbeitet.';
+// Überprüfen, ob die Verbindung erfolgreich hergestellt wurde
+if ($conn->connect_error) {
+    die("Verbindung zur Datenbank fehlgeschlagen: " . $conn->connect_error);
+}
+
+// Durch alle empfangenen Daten iterieren
+foreach ($data as $fachNotenObjekt) {
+    $benutzer = $fachNotenObjekt->Benutzer;
+    $fach = $fachNotenObjekt->Fach;
+    $noten = implode(',', $fachNotenObjekt->Noten);
+
+    // SQL-Abfrage zum Einfügen der Daten in die Tabelle notenDatenbank
+    $sql = "INSERT INTO notenDatenbank (Benutzer, Fach, Note) VALUES ('$benutzer', '$fach', '$noten')";
+    
+    // Die SQL-Abfrage ausführen
+    if ($conn->query($sql) === TRUE) {
+        echo "Daten erfolgreich in die Datenbank eingetragen.";
+    } else {
+        echo "Fehler beim Eintragen der Daten: " . $conn->error;
+    }
+}
+
+// Verbindung zur Datenbank schließen
+$conn->close();
 ?>
