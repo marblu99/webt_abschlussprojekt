@@ -156,6 +156,12 @@ function userFachNotenObjekt() {
             // Erfolgreich
             console.log('Antwort von PHP:', xhr.responseText);
 
+            let dropdown = document.getElementById('benutzerDropdown');
+            // Alle vorhandenen Optionen entfernen
+            dropdown.innerHTML = '';
+
+            bereitsErstellteBenutzerAbfragen();
+
 
         } else {
             // Fehler
