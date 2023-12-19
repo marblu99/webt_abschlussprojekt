@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="js/script.js" defer></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <h1>Notenrechner</h1>
     <nav>
@@ -17,23 +19,34 @@
         </ul>
     </nav>
 
-    
-    
     <section id="information">
         <h2>Projektbeschrieb</h2>
         <p>
-            Ziel dieser Webapplikation ist es, alle Noten eines Benutzers in einer Datenbank abzuspeichern und anschliessend
+            Ziel dieser Webapplikation ist es, alle Noten eines Benutzers in einer Datenbank abzuspeichern und
+            anschliessend
             den Notendurchschnitt pro Fach sowie den Gesamtschnitt auszugeben.
         </p>
     </section>
 
     <section id="eingabebereich">
         <h2>Eingabebereich</h2>
-        <label for="username">Benutzername:</label>
+        <form>
+    <label>
+        <input type="radio" name="auswahl" value="option1" onclick="benutzerAuswahl(true)">
+        Neuer Benutzer anlegen
+    </label>
+
+    <label>
+        <input type="radio" name="auswahl" value="option2" onclick="benutzerAuswahl(false)" checked> 
+        Bestehender Benutzer auswählen
+    </label>
+</form>
         <input type="text" id="username" placeholder="Neuer Benutzername">
+        <label for="benutzerDropdown">Benutzer auswählen:</label>
+        <select id="benutzerDropdown"></select>
 
         <button onclick="grundstrukturErstellen()">Fach hinzufügen</button>
-        <button onclick="sendeDatenAnBackend()">Berechne den Notendurchschnitt</button>
+        <button id='notenDurchschnittButton' onclick="sendeDatenAnBackend()">Berechne den Notendurchschnitt</button>
     </section>
 
     <section id="ausgabebereich">
@@ -41,4 +54,5 @@
         <!-- Hier werden die Ergebnisse angezeigt -->
     </section>
 </body>
+
 </html>

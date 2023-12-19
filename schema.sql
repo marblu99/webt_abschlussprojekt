@@ -4,6 +4,7 @@ create DATABASE test;
 use test;
 
 CREATE TABLE notenDatenbank (
+    ID AUTO_INCREMENT,
     Benutzer VARCHAR(20),
     Fach VARCHAR(20),
     Note DECIMAL(3, 2)

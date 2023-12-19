@@ -2,18 +2,76 @@ let notenID = 0;
 let fachZähler = 1;
 let wurdeBereitsAufgerufen = false;
 
+document.addEventListener("DOMContentLoaded", function () {
+    benutzerAuswahl(false);
+});
+
+// Benutzerfelder gemäss Auswahl anzeigen
+function benutzerAuswahl(neuerBenutzer) {
+    let usernameInput = document.getElementById('username');
+    let benutzerDropdown = document.getElementById('benutzerDropdown');
+    let benutzerDropdownLabel = document.querySelector('label[for="benutzerDropdown"]');
+
+    if (neuerBenutzer) {
+        benutzerDropdownLabel.style.display = 'none';
+        benutzerDropdown.style.display = 'none';
+        usernameInput.style.display = 'block';
+    } else {
+        benutzerDropdownLabel.style.display = 'block';
+        benutzerDropdown.style.display = 'block';
+        usernameInput.style.display = 'none';
+    }
+}
+
+
+// AJAX-Anfrage, um Benutzernamen abzurufen
+document.addEventListener('DOMContentLoaded', function () {
+    var xhr = new XMLHttpRequest();
+    var url = 'backend.php';
+    xhr.open('GET', url, true);
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var responseData = JSON.parse(xhr.responseText);
+
+            if ('benutzerListe' in responseData) {
+                // Dropdown-Element aus dem HTML-Dokument auswählen
+                var dropdown = document.getElementById('benutzerDropdown');
+
+                // Schleife durch die Benutzerliste und fügt Optionen zum Dropdown hinzu
+                responseData.benutzerListe.forEach(function (benutzer) {
+                    var option = document.createElement('option');
+                    option.value = benutzer;
+                    option.text = benutzer;
+                    dropdown.add(option);
+                });
+            } else if ('error' in responseData) {
+                console.error('Fehler beim Abrufen der Benutzerliste: ' + responseData.error);
+            } else {
+                console.error('Unerwartete Antwortformat.');
+            }
+        } else {
+            console.error('Fehler beim Abrufen der Benutzerliste.');
+        }
+    };
+
+    xhr.send();
+});
+
+
 function grundstrukturErstellen() {
     // Überprüfen, ob die Funktion bereits aufgerufen wurde
     if (!wurdeBereitsAufgerufen) {
         // Div für Kopfzeile erstellen
-        let kopfzeilenDiv = document.createElement("div");
-        kopfzeilenDiv.id = "kopfzeile";
-        document.body.appendChild(kopfzeilenDiv);
+        let kopfzeilenDiv = document.createElement('div');
+        kopfzeilenDiv.id = 'kopfzeile';
+        document.getElementById('notenDurchschnittButton').insertAdjacentElement('afterend', kopfzeilenDiv);
 
         // Titel erstellen
         let Titel1 = document.createElement('h1');
         Titel1.innerText = "Fächer";
         let Titel2 = document.createElement('h1');
+        Titel2.id = 'notenTitel'
         Titel2.innerText = "Noten";
 
         document.getElementById("kopfzeile").insertAdjacentElement("afterbegin", Titel1);
@@ -34,7 +92,7 @@ function neuesFachErstellen() {
     // Neues Div-Element für Fächer und Noten
     let neuesDiv = document.createElement("div");
     neuesDiv.id = "div" + fachZähler;
-    document.body.appendChild(neuesDiv);
+    document.getElementById('notenTitel').insertAdjacentElement("afterend", neuesDiv);
 
     let neuesFach = document.createElement("input");
     neuesFach.id = "f" + fachZähler;
@@ -119,17 +177,42 @@ function sendeDatenAnBackend() {
             console.log('Antwort von PHP:', xhr.responseText);
 
             var notenDurchschnitte = JSON.parse(xhr.responseText);
-            notenDurchschnitte.forEach(function(fachDurchschnitt) {
-                // Erstelle <h3>-Element für jedes Fach
-                var h3Element = document.createElement('h3');
-                h3Element.textContent = fachDurchschnitt.Fach;
 
-                // Erstelle Textknoten mit dem Notendurchschnitt
-                var durchschnittText = document.createTextNode('Durchschnitt: ' + fachDurchschnitt.Durchschnitt);
+            // Erstelle eine Tabelle
+            var table = document.createElement('table');
+            table.border = '1';
 
-                // Füge die Elemente dem Body hinzu
-                document.body.appendChild(h3Element);
-                document.body.appendChild(durchschnittText);
+            // Durchlaufe alle Notendurchschnitte
+            notenDurchschnitte.forEach(function (fachDurchschnitt) {
+                // Füge eine Zeile zur Tabelle hinzu
+                var row = table.insertRow();
+
+                // Füge Zellen zur Zeile hinzu
+                var fachCell = row.insertCell(0);
+                var notenCell = row.insertCell(1);
+                var durchschnittCell = row.insertCell(2);
+
+                // Setze den Inhalt der Zellen
+                fachCell.textContent = fachDurchschnitt.Fach;
+
+                // Überprüfe, ob fachDurchschnitt.Noten definiert ist, bevor die join-Methode aufgerufen wird
+                notenCell.textContent = fachDurchschnitt.Noten ? fachDurchschnitt.Noten.join(', ') : '';
+
+                durchschnittCell.textContent = 'Durchschnitt: ' + fachDurchschnitt.Durchschnitt;
+            });
+
+            // Füge die Tabelle dem Body hinzu
+            document.body.appendChild(table);
+
+            // Leere die Inputfelder
+            divElemente.forEach(divElement => {
+                let fachInput = divElement.querySelector('input[type="text"]');
+                fachInput.value = ''; // Fach-Input leeren
+
+                let noteInputs = divElement.querySelectorAll('input[type="number"]');
+                noteInputs.forEach(noteInput => {
+                    noteInput.value = ''; // Note-Input leeren
+                });
             });
 
         } else {
