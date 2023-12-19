@@ -114,7 +114,7 @@ function sendeDatenAnBackend() {
 
     // Callback-Funktion für den Abschluss der Anfrage
     xhr.onload = function () {
-        if (xhr.status === 500) {
+        if (xhr.status === 200) {
             // Erfolgreich
             console.log('Antwort von PHP:', xhr.responseText);
         } else {

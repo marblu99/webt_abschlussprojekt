@@ -1,61 +1,14 @@
 <?php
-
-// JSON-Daten aus dem Request lesen
+// Empfange die JSON-Daten von der POST-Anfrage
 $jsonData = file_get_contents('php://input');
-$data = json_decode($jsonData, true);
+$data = json_decode($jsonData);
 
-// Verarbeite die Daten und schreibe sie in die Datenbank
+// Hier kannst du die empfangenen Daten weiter verarbeiten, z.B. in einer Datenbank speichern
+// Beachte, dass dies ein einfaches Beispiel ist und du dies an deine Anforderungen anpassen musst
 
-// Verbindung zur Datenbank herstellen (Beispiel, bitte mit eigenen Daten ersetzen)
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "notenDatenbank";
+// Beispiel: Daten in einer Datei speichern (nur zu Demonstrationszwecken)
+file_put_contents('gespeicherte_daten.json', json_encode($data));
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Überprüfen der Verbindung
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// SQL-Query zum Erstellen der Tabelle, falls sie noch nicht existiert
-$createTableSQL = "CREATE TABLE IF NOT EXISTS notenDatenbank (
-    Benutzer VARCHAR(50),
-    Fach VARCHAR(50),
-    Note DECIMAL(3, 2)
-)";
-
-if ($conn->query($createTableSQL) !== TRUE) {
-    echo "Error creating table: " . $conn->error;
-    http_response_code(500);
-    die();
-}
-
-// Iteriere durch die empfangenen Daten und füge sie in die Datenbank ein
-foreach ($data as $entry) {
-    $benutzer = $entry['Benutzer'];
-    $fach = $entry['Fach'];
-    $noten = $entry['Noten'];
-
-    // Füge für jede Note einen Eintrag in die Datenbank ein
-    foreach ($noten as $note) {
-        // SQL-Query zum Einfügen der Daten
-        $insertDataSQL = "INSERT INTO notenDatenbank (Benutzer, Fach, Note) VALUES ('$benutzer', '$fach', '$note')";
-
-        if ($conn->query($insertDataSQL) !== TRUE) {
-            echo "Error inserting data: " . $conn->error;
-            http_response_code(500);
-            die();
-        }
-    }
-}
-
-
-// Verbindung schließen
-$conn->close();
-
-// Erfolgreiche Ausführung
-echo "Data inserted successfully.";
-
+// Gib eine Antwort an die JavaScript-Anwendung zurück
+echo 'Daten erfolgreich empfangen und verarbeitet.';
 ?>
