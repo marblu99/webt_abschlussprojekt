@@ -44,7 +44,7 @@ function insertData($conn, $benutzer, $fach, $note)
 // Funktion zum Berechnen des Notendurchschnitts pro Fach
 function calculateAverage($conn, $benutzer)
 {
-    $sqlDurchschnitt = "SELECT Benutzer, Fach, AVG(Note) AS Durchschnitt FROM notenDatenbank WHERE Benutzer = ? GROUP BY Fach";
+    $sqlDurchschnitt = "SELECT Benutzer, Fach, AVG(Note) AS Durchschnitt, GROUP_CONCAT(Note) AS Noten FROM notenDatenbank WHERE Benutzer = ? GROUP BY Fach";
     $stmtDurchschnitt = $conn->prepare($sqlDurchschnitt);
     if ($stmtDurchschnitt === false) {
         return array('error' => 'Fehler beim Vorbereiten der Durchschnittsabfrage: ' . $conn->error);
@@ -61,7 +61,8 @@ function calculateAverage($conn, $benutzer)
                 $fachDurchschnitt = array(
                     'Benutzer' => $rowDurchschnitt['Benutzer'],
                     'Fach' => $rowDurchschnitt['Fach'],
-                    'Durchschnitt' => $rowDurchschnitt['Durchschnitt']
+                    'Durchschnitt' => $rowDurchschnitt['Durchschnitt'],
+                    'Noten' => explode(',', $rowDurchschnitt['Noten'])
                 );
 
                 // Das Fachdurchschnittsobjekt zum Serverantwort-Array hinzufügen
