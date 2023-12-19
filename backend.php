@@ -17,7 +17,7 @@ if ($conn->connect_error) {
     die("Verbindung zur Datenbank fehlgeschlagen: " . $conn->connect_error);
 }
 
-// Durch alle empfangenen Daten iterieren
+// Durch alle empfangenen Daten iterieren und in die Datenbank eintragen
 foreach ($data as $fachNotenObjekt) {
     $benutzer = $fachNotenObjekt->Benutzer;
     $fach = $fachNotenObjekt->Fach;
@@ -27,13 +27,36 @@ foreach ($data as $fachNotenObjekt) {
     $sql = "INSERT INTO notenDatenbank (Benutzer, Fach, Note) VALUES ('$benutzer', '$fach', '$noten')";
     
     // Die SQL-Abfrage ausführen
-    if ($conn->query($sql) === TRUE) {
-        echo "Daten erfolgreich in die Datenbank eingetragen.";
-    } else {
+    if ($conn->query($sql) !== TRUE) {
         echo "Fehler beim Eintragen der Daten: " . $conn->error;
+        // Hier kannst du entscheiden, wie du mit dem Fehler umgehen möchtest
     }
+}
+
+// Notendurchschnitte pro Fach berechnen
+$sqlDurchschnitt = "SELECT Benutzer, Fach, AVG(Note) AS Durchschnitt FROM notenDatenbank WHERE Benutzer = '$benutzer' GROUP BY Fach";
+$resultDurchschnitt = $conn->query($sqlDurchschnitt);
+
+$response = array(); // Array für die Serverantwort
+
+if ($resultDurchschnitt->num_rows > 0) {
+    while ($rowDurchschnitt = $resultDurchschnitt->fetch_assoc()) {
+        $fachDurchschnitt = array(
+            'Benutzer' => $rowDurchschnitt['Benutzer'],
+            'Fach' => $rowDurchschnitt['Fach'],
+            'Durchschnitt' => $rowDurchschnitt['Durchschnitt']
+        );
+
+        // Das Fachdurchschnittsobjekt zum Serverantwort-Array hinzufügen
+        $response[] = $fachDurchschnitt;
+    }
+} else {
+    $response[] = array('message' => 'Keine Daten gefunden.');
 }
 
 // Verbindung zur Datenbank schließen
 $conn->close();
+
+// Serverantwort als JSON zurückschicken
+echo json_encode($response);
 ?>

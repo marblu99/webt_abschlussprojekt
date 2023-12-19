@@ -117,6 +117,21 @@ function sendeDatenAnBackend() {
         if (xhr.status === 200) {
             // Erfolgreich
             console.log('Antwort von PHP:', xhr.responseText);
+
+            var notenDurchschnitte = JSON.parse(xhr.responseText);
+            notenDurchschnitte.forEach(function(fachDurchschnitt) {
+                // Erstelle <h3>-Element für jedes Fach
+                var h3Element = document.createElement('h3');
+                h3Element.textContent = fachDurchschnitt.Fach;
+
+                // Erstelle Textknoten mit dem Notendurchschnitt
+                var durchschnittText = document.createTextNode('Durchschnitt: ' + fachDurchschnitt.Durchschnitt);
+
+                // Füge die Elemente dem Body hinzu
+                document.body.appendChild(h3Element);
+                document.body.appendChild(durchschnittText);
+            });
+
         } else {
             // Fehler
             console.error('Fehler beim Senden der Daten.');
