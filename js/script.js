@@ -1,3 +1,6 @@
+// Globale Variablen
+let fachZähler = 1;
+
 // Eventlistener für Funktionen die beim Laden der Seite ausgeführt werden sollen
 document.addEventListener("DOMContentLoaded", function () {
     benutzerAuswahl(false);
@@ -66,7 +69,6 @@ function anzeigenEingabeNotentabelle() {
 
 function FächerzeileTabelleEinfügen() {
     let tabelle = document.getElementById('notenTabelleEinträge');
-    let tbody;
 
     let neuesFach = document.createElement('input');
     neuesFach.type = 'text';
@@ -97,6 +99,7 @@ function FächerzeileTabelleEinfügen() {
 
     // Füge eine normale Zeile zum tbody hinzu
     let normaleZeile = tbody.insertRow();
+    normaleZeile.id = 'f' + fachZähler;
 
     // Füge die Zellen für Fach, Note und Button hinzu
     let fachZelle = normaleZeile.insertCell(0);
@@ -121,6 +124,9 @@ function FächerzeileTabelleEinfügen() {
         let neueZelle = tabelle.rows[letzteZeile].insertCell(1);
         neueZelle.appendChild(neuesFach);
     })
+
+    fachZähler++;
+    console.log(fachZähler)
 
 
 }
