@@ -64,9 +64,9 @@ function anzeigenEingabeNotentabelle() {
     console.log(letzteZeile)
 }
 
-function zeileTabelleEinfügen() {
-
+function FächerzeileTabelleEinfügen() {
     let tabelle = document.getElementById('notenTabelleEinträge');
+    let tbody;
 
     let neuesFach = document.createElement('input');
     neuesFach.type = 'text';
@@ -75,8 +75,8 @@ function zeileTabelleEinfügen() {
     let neuerButton = document.createElement('button');
     neuerButton.innerText = 'Note hinzufügen';
 
-    if (tabelle.style.display === 'none') {
 
+    if (tabelle.style.display === 'none') {
         tabelle.style.display = 'block';
 
         // Erstelle die Titelzeile
@@ -87,35 +87,42 @@ function zeileTabelleEinfügen() {
         let noteHeader = titelZeile.insertCell(1);
         noteHeader.innerText = 'Note';
 
-        // Füge eine normale Zeile zum tbody hinzu
-        let normaleZeile = tabelle.insertRow();
-
-        // Füge die Zellen für Fach, Note und Button hinzu
-        let fachZelle = normaleZeile.insertCell(0);
-        fachZelle.appendChild(neuesFach);
-
-        let noteZelle = normaleZeile.insertCell(1);
-        noteZelle.appendChild(neueNote);
-
-        let buttonZelle = normaleZeile.insertCell(2);
-        buttonZelle.appendChild(neuerButton);
-
-
+        // Erstelle den tbody und füge ihn zur Tabelle hinzu
+        tbody = document.createElement('tbody');
+        tabelle.appendChild(tbody);
     } else {
-
-        let normaleZeile = tabelle.insertRow();
-
-        // Füge die Zellen für Fach, Note und Button hinzu
-        let fachZelle = normaleZeile.insertCell(0);
-        fachZelle.appendChild(neuesFach);
-
-        let noteZelle = normaleZeile.insertCell(1);
-        noteZelle.appendChild(neueNote);
-
-        let buttonZelle = normaleZeile.insertCell(2);
-        buttonZelle.appendChild(neuerButton);
-
+        // Greife auf den bestehenden tbody zu
+        tbody = tabelle.getElementsByTagName('tbody')[0];
     }
+
+    // Füge eine normale Zeile zum tbody hinzu
+    let normaleZeile = tbody.insertRow();
+
+    // Füge die Zellen für Fach, Note und Button hinzu
+    let fachZelle = normaleZeile.insertCell(0);
+    fachZelle.appendChild(neuesFach);
+
+    let noteZelle = normaleZeile.insertCell(1);
+    noteZelle.appendChild(neueNote);
+
+    let buttonZelle = normaleZeile.insertCell(2);
+    buttonZelle.appendChild(neuerButton);
+    neuerButton.addEventListener('click', function () {
+
+        // Finde das letzte Inputfeld
+        let letzteZeile = tabelle.rows.length - 1;
+        let letztesInput = tabelle.rows[letzteZeile].cells[0].querySelector('input[type="text"]:last-child');
+
+        // Erstelle ein neues Inputfeld
+        let neuesFach = document.createElement('input');
+        neuesFach.type = 'text';
+
+        // Füge das neue Inputfeld zwischen dem letzten Inputfeld und dem Button hinzu
+        let neueZelle = tabelle.rows[letzteZeile].insertCell(1);
+        neueZelle.appendChild(neuesFach);
+    })
+
+
 }
 
 
