@@ -1,16 +1,33 @@
 // Globale Variablen
 let fachZähler = 1;
+let benutzer;
+let usernameInput = document.getElementById('username');
+let benutzerDropdown = document.getElementById('benutzerDropdown');
+let radioBox = document.getElementById('bestehenderBenutzer');
 
 // Eventlistener für Funktionen die beim Laden der Seite ausgeführt werden sollen
 document.addEventListener("DOMContentLoaded", function () {
-    benutzerAuswahl(false);
     bereitsErstellteBenutzerAbfragen();
+    benutzerAuswahl(false);
 });
+
+// Benutzer in Variable schreiben
+function findeBenutzerHeraus() {
+
+    if (radioBox.checked) {
+
+        benutzer = benutzerDropdown.value;
+
+    } else {
+
+        benutzer = usernameInput.value;
+
+    }
+}
+
 
 // Benutzerfelder gemäss Auswahl anzeigen
 function benutzerAuswahl(neuerBenutzer) {
-    let usernameInput = document.getElementById('username');
-    let benutzerDropdown = document.getElementById('benutzerDropdown');
     let benutzerDropdownLabel = document.querySelector('label[for="benutzerDropdown"]');
 
     if (neuerBenutzer) {
@@ -63,8 +80,6 @@ function bereitsErstellteBenutzerAbfragen() {
 function anzeigenEingabeNotentabelle() {
     let tabelle = document.getElementById('notenTabelleEinträge');
     tabelle.style.display = 'block';
-
-    console.log(letzteZeile)
 }
 
 function FächerzeileTabelleEinfügen() {
@@ -77,7 +92,6 @@ function FächerzeileTabelleEinfügen() {
     let neuerButton = document.createElement('button');
     neuerButton.innerText = 'Note hinzufügen';
     neuerButton.id = "b" + fachZähler;
-
 
     if (tabelle.style.display === 'none') {
         tabelle.style.display = 'block';
@@ -135,11 +149,52 @@ function FächerzeileTabelleEinfügen() {
     })
 
     fachZähler++;
-    console.log(fachZähler)
+}
 
+function sendeDatenAnBackend() {
+    benutzerFachNotenObjekt();
 
 }
 
+
+function benutzerFachNotenObjekt() {
+
+    findeBenutzerHeraus();
+    fehlermeldung = document.getElementById('fehlerAusgabe');
+
+    if (benutzer !== '') {
+
+        anzahlZeilenTabelle = document.getElementById('notenTabelleEinträge').rows.length;
+        console.log(anzahlZeilenTabelle);
+
+
+        // Fach pro Zeile abfragen und alle zugehörigen Noten
+
+        benutzerFachNoten = {
+            Benutzer: benutzer,
+            Fach: 'Hallo',
+            Noten: 'Noten'
+        }
+
+
+
+        fehlermeldung.innerText = '';
+
+        console.log(benutzerFachNoten);
+
+        } else {
+
+            fehlermeldung.innerText = 'Kein Benutzer, kein Fach oder keine Note eingetragen!'
+
+
+
+        }
+
+
+
+
+
+    }
 
 
 /*

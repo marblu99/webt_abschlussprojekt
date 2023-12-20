@@ -38,22 +38,25 @@
             </label>
 
             <label>
-                <input type="radio" name="auswahl" value="option2" onclick="benutzerAuswahl(false)" checked>
+                <input id="bestehenderBenutzer"type="radio" name="auswahl" value="option2" onclick="benutzerAuswahl(false)" checked>
                 Bestehender Benutzer auswählen
             </label>
         </form>
         <input type="text" id="username" placeholder="Neuer Benutzername">
         <label for="benutzerDropdown">Benutzer auswählen:</label>
-        <select id="benutzerDropdown"></select>
+        <select id="benutzerDropdown"> 
+            <option value="">Bitte wählen Sie einen Benutzer</option>
+        </select>
 
         <button id='fachHinzufügen' onclick='FächerzeileTabelleEinfügen()'>Fach hinzufügen</button>
         <button id="fachEntfernen" onclick="" style="display: none;">Fach entfernen</button>
-        <button id='aktuellerNotendurchschnittButton' onclick="sendeDatenAnBackend()">Aktueller Notendurchschnitt
-            berechnen</button>
-        <button id='neuerNotenDurchschnittButton' onclick="" style="display: none;">Neuer Notendurchschnitt
-            berechnen</button>
+        <button id='aktuellerNotendurchschnittButton' onclick="sendeDatenAnBackend()">Aktueller Notendurchschnitt berechnen</button>
+        <button id='neuerNotenDurchschnittButton' onclick="" style="display: none;">Neuer Notendurchschnitt berechnen</button>
+        <button onclick="sendeDatenAnBackend()">Testbutton</button>
 
         <table id="notenTabelleEinträge" style="display: none;"></table>
+
+        <p id="fehlerAusgabe"></p>
 
     </section>
 
@@ -71,8 +74,8 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td>Notenschnitt</td>
-                    <td id="notenschnitt"></td>
+                    <td>Gesamtnotenschnitt</td>
+                    <td id="gesamtnotenschnitt"></td>
                 </tr>
             </tfoot>
         </table>
