@@ -113,17 +113,25 @@ function FächerzeileTabelleEinfügen() {
     buttonZelle.appendChild(neuerButton);
     neuerButton.addEventListener('click', function () {
 
-        // Finde das letzte Inputfeld
-        let letzteZeile = tabelle.rows.length - 1;
-        let letztesInput = tabelle.rows[letzteZeile].cells[0].querySelector('input[type="text"]:last-child');
+        let buttonId = event.target.id;
+        let letzteZahl = buttonId.charAt(buttonId.length - 1);
 
-        // Erstelle ein neues Inputfeld
-        let neuesFach = document.createElement('input');
-        neuesFach.type = 'text';
+        // Das Element (Zeile) mit der entsprechenden ID erhalten
+        let richtigeZeile = document.getElementById('f' + letzteZahl);
 
-        // Füge das neue Inputfeld zwischen dem letzten Inputfeld und dem Button hinzu
-        let neueZelle = tabelle.rows[letzteZeile].insertCell(1);
-        neueZelle.appendChild(neuesFach);
+        // Ein neues Input-Feld erstellen
+        let neueNote = document.createElement('input');
+        neueNote.type = 'number';
+
+        // Alle vorhandenen Zellen in der Zeile erhalten
+        let zellen = richtigeZeile.getElementsByTagName('td');
+
+        // Die vorletzte Zelle (Index -2) erhalten
+        let vorletzteZelle = zellen[zellen.length - 1];
+
+        // Das neue Input-Feld vor der vorletzten Zelle einfügen
+        vorletzteZelle.insertAdjacentElement('beforebegin', neueNote);
+
     })
 
     fachZähler++;
