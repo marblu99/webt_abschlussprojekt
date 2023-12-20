@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notenrechner</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js" defer></script>
+    <!--<script src="var/done.js" defer></script> -->
 </head>
 
 <body>
@@ -31,12 +33,12 @@
         <h2>Eingabebereich</h2>
         <form>
             <label>
-                <input type="radio" name="auswahl" value="option1">
+                <input type="radio" name="auswahl" value="option1" onclick="benutzerAuswahl(true)">
                 Neuer Benutzer anlegen
             </label>
 
             <label>
-                <input type="radio" name="auswahl" value="option2" checked>
+                <input type="radio" name="auswahl" value="option2" onclick="benutzerAuswahl(false)" checked>
                 Bestehender Benutzer auswählen
             </label>
         </form>
@@ -44,37 +46,20 @@
         <label for="benutzerDropdown">Benutzer auswählen:</label>
         <select id="benutzerDropdown"></select>
 
-        <button id="fachHinzufügen" onclick="fächerAnzeigen()">Fach hinzufügen</button>
+        <button id='fachHinzufügen' onclick='zeileTabelleEinfügen()'>Fach hinzufügen</button>
         <button id="fachEntfernen" onclick="" style="display: none;">Fach entfernen</button>
-        <button id='aktuellerNotendurchschnittButton' onclick="sendeDatenAnBackend()"
-            id='notenDurchschnittButton'>Aktueller Notendurchschnitt berechnen</button>
+        <button id='aktuellerNotendurchschnittButton' onclick="sendeDatenAnBackend()">Aktueller Notendurchschnitt
+            berechnen</button>
         <button id='neuerNotenDurchschnittButton' onclick="" style="display: none;">Neuer Notendurchschnitt
             berechnen</button>
 
-        <table id="notenTabelleEinträge" style="display: none;">
-            <thead>
-                <tr>
-                    <th>Fach</th>
-                    <th>Note</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <td>
-                    <input type="text">
-                    <input type="number">
-                </td>
-            </tbody>
-
-            <!-- Tabelle wird ab hier dynamisch erstellt -->
-
-        </table>
+        <table id="notenTabelleEinträge" style="display: none;"></table>
 
     </section>
 
     <section id="ausgabebereich">
         <h2>Ausgabebereich</h2>
-        <table id="notentabelle" border="1" style="display: none;">
+        <table id="notentabelle" style="display: none;">
             <thead>
                 <tr>
                     <th>Fach</th>
@@ -93,8 +78,6 @@
         </table>
         <!-- Hier werden die Ergebnisse angezeigt -->
     </section>
-
-    <script src="js/script.js" defer></script>
 
 </body>
 
