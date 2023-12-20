@@ -76,6 +76,7 @@ function FächerzeileTabelleEinfügen() {
     neueNote.type = 'number';
     let neuerButton = document.createElement('button');
     neuerButton.innerText = 'Note hinzufügen';
+    neuerButton.id = "b" + fachZähler;
 
 
     if (tabelle.style.display === 'none') {
