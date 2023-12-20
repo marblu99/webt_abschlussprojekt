@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notenrechner</title>
-    <script src="js/script.js" defer></script>
-    <script src="var/done.js" defer></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -14,7 +12,7 @@
     <h1>Notenrechner</h1>
     <nav>
         <ul>
-            <li><a href="#information">Information</a></li>
+            <li><a href="#Information">Information</a></li>
             <li><a href="#eingabebereich">Eingabebereich</a></li>
             <li><a href="#ausgabebereich">Ausgabebereich</a></li>
         </ul>
@@ -32,25 +30,45 @@
     <section id="eingabebereich">
         <h2>Eingabebereich</h2>
         <form>
-    <label>
-        <input type="radio" name="auswahl" value="option1" onclick="benutzerAuswahl(true)">
-        Neuer Benutzer anlegen
-    </label>
+            <label>
+                <input type="radio" name="auswahl" value="option1">
+                Neuer Benutzer anlegen
+            </label>
 
-    <label>
-        <input type="radio" name="auswahl" value="option2" onclick="benutzerAuswahl(false)" checked> 
-        Bestehender Benutzer auswählen
-    </label>
-</form>
+            <label>
+                <input type="radio" name="auswahl" value="option2" checked>
+                Bestehender Benutzer auswählen
+            </label>
+        </form>
         <input type="text" id="username" placeholder="Neuer Benutzername">
         <label for="benutzerDropdown">Benutzer auswählen:</label>
         <select id="benutzerDropdown"></select>
 
-        <button onclick="fächerAnzeigen()">Fach hinzufügen</button>
-        <button onclick="sendeDatenAnBackend()" id='notenDurchschnittButton' >Aktueller Notendurchschnitt berechnen</button>
+        <button id="fachHinzufügen" onclick="fächerAnzeigen()">Fach hinzufügen</button>
+        <button id="fachEntfernen" onclick="" style="display: none;">Fach entfernen</button>
+        <button id='aktuellerNotendurchschnittButton' onclick="sendeDatenAnBackend()"
+            id='notenDurchschnittButton'>Aktueller Notendurchschnitt berechnen</button>
+        <button id='neuerNotenDurchschnittButton' onclick="" style="display: none;">Neuer Notendurchschnitt
+            berechnen</button>
 
-        <h3 id="Fächer" style="display: none;">Fächer</h3>
-        <h3 id="Noten" style="display: none;">Noten</h3>
+        <table id="notenTabelleEinträge" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Fach</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <td>
+                    <input type="text">
+                    <input type="number">
+                </td>
+            </tbody>
+
+            <!-- Tabelle wird ab hier dynamisch erstellt -->
+
+        </table>
 
     </section>
 
@@ -75,6 +93,9 @@
         </table>
         <!-- Hier werden die Ergebnisse angezeigt -->
     </section>
+
+    <script src="js/script.js" defer></script>
+
 </body>
 
 </html>
